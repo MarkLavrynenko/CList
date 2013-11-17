@@ -37,7 +37,7 @@ void add_item(list* list, int item, bool begin) {
 		list->tail = list->head= node;
 		list->count = 1;		 
 	} else {
-		// vstavka v nachalo spiska
+		// insert at the beginning of the list
 		if (begin) {
 			node->next = list->head;
 			list->head = node;			
@@ -49,7 +49,7 @@ void add_item(list* list, int item, bool begin) {
 	}		
 }
 
-// dobavlenie el-ta v konets
+// append items to the end
 void add_items(list* list, int* items, int count) {
 	while (count > 0) {
 		add_item(list, *items, false);
@@ -116,7 +116,21 @@ list* list_concat(list* fst, list* scnd) {
 	return res;
 }
 
-// true, yesli perviy spisok yest' nachalom vtorogo
+void list_invert(list* lst) {
+   list_node *i, 
+             *prev   = NULL,
+             *tmp    = NULL;
+   i = get_head(lst);
+   while (i != NULL) {
+      tmp = i;
+      i = i->next;
+      tmp->next = prev;
+      prev = tmp;
+   }
+   lst->head = prev;
+}
+
+// return true if first list begins with second list
 bool starts_with(list* frst, list* second) {
 	int n, m;
 	list_node *i, *j;
@@ -132,13 +146,13 @@ bool starts_with(list* frst, list* second) {
 	}
 	return j == NULL;	
 }
-// true, yesli perviy spisok soderzhit vtoroi
+// return true if first list contains the second
 bool is_sublist(list* frst, list* scnd) {
-	// zadanie peremennih
+	// declare variables
 	int n, m;
 	list part;	
 	list_node *i = frst->head;
-	// osnovnaya chast'
+	// init part
 	part.count = n = frst->count;
 	part.head = frst->head;
 	part.tail = frst->tail;
@@ -148,7 +162,7 @@ bool is_sublist(list* frst, list* scnd) {
 		return true;
 	if (n < m)
 		return false;
-	// reshenie
+	// solve
 	while (part.count >= m && i != NULL) {
 		if (starts_with(&part, scnd))
 			return true;		

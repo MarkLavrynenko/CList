@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <memory.h>
 #include <assert.h>
 #include <conio.h>
@@ -11,6 +12,10 @@ void test_list_search();
 void test_list_concat();
 void test_starts_with();
 void test_is_sublist();
+
+void show_search();
+void show_concat();
+void show_invert();
 
 void test_list_creation() {
 	list* tlst;
@@ -96,40 +101,88 @@ void test_is_sublist() {
 	add_items(second, b, 2);
 	assert(is_sublist(first, second) == true);
 }
+
+
+void read_list(list** lst, int number) {
+   int item;
+   create_list(lst);
+   printf("Enter list %d \n", number);
+   printf("Enter item or zero to finish\n");
+   scanf("%d", &item);
+   while (item != 0) {      
+      add_item(*lst, item, false);
+      scanf("%d", &item);
+   }
+   printf("Done with list %d length is %d\n", number, get_list_length(*lst));
+}
+
+void print_list(list* lst) {
+   list_node* iter;
+   assert(lst != NULL);
+   iter = lst->head;
+   printf("List length is %d ( ", get_list_length(lst));
+   while (iter != NULL) {
+      printf("%d ", iter->data);
+      iter = iter->next;
+   }
+   printf(")\n");
+}
+
 int main() {
-    int out = printf("Hello to my list program\n");
+   char command[10];   
+   int out = printf("Hello to my list program\n");
 	test_list_creation();	
 	test_list_length();
 	test_list_search();	
 	test_list_concat();	
 	test_starts_with();
 	test_is_sublist();
-	printf("All programs done.\n");
-    list* first, *second, *result;
-    list_node* i;
-    char l;
-    int n,k1,k2;
-    init_lists(&first, &second);
-    create_list(&result);
-    printf("Vvedite element spiska 1 or 0 dlia vyhoda.\n");
-    do{scanf("%d",&n);
-    if (n==0) break;
-    add_item (first, n, true);} while(1);
-    printf("Vvedite element spiska 2 or 0 dlia vyhoda.\n");
-    do{scanf("%d",&n);
-    if (n==0) break;
-    add_item (second,n,true);} while(1);
-    k1=get_list_length(first);
-    k2=get_list_length(second);
-    printf("Dlina 1 spiska=\n");
-    printf("Dlina 2 spiska=\n",k2);
-    printf("Vvedite element poiska.\n");
-    scanf("%d",&n);
-    if(find_element(first,n)==NULL) printf("Element otsutstvuet y spiske 1.\n");
-    else printf("Element est' v spiske 1.\n");
-    result=list_concat(first,second);
-    i = result->head;
-	while (i != NULL) {printf(" ",i->data); i = i->next;}
-    getch();
-    return 0;
+	printf("All tests done.\n");
+   printf("Which program u want to run?\n Enter one of the following:\nsearch\nconcat\ninvert\nisstart\nissublist\nreplace\n");
+   scanf("%s", command);
+   if (strcmp(command, "search") == 0) {
+      show_search();
+   } else if (strcmp(command, "concat") == 0) {
+      show_concat();
+   } else if (strcmp(command, "invert") == 0) {
+      show_invert();
+   } else if (strcmp(command, "isstart") == 0) {
+
+   } else if (strcmp(command, "issublist") == 0) {
+
+   } else if (strcmp(command, "replace") == 0) {
+
+   } else printf("Invalid command\n");   
+   getch();
+   return 0;
+}
+
+
+void show_search() {
+   list* a;
+   int element;
+   printf("List search demo\n");
+   read_list(&a, 1);
+   printf("Enter element to search-> ");
+   scanf("%d", &element);
+   printf("%s\n", (find_element(a, element) == NULL) ? "No such element" : "Found");
+}
+
+void show_concat() {
+   list *a, *b, *res;
+   printf("List concatenation demo");
+   read_list(&a, 1);
+   read_list(&b, 2);
+   printf("Result list is: ");
+   res = list_concat(a, b);
+   print_list(res);
+}
+
+void show_invert() {
+   list* a;
+   printf("Show list invert demo\n");
+   read_list(&a, 1);
+   printf("Result list is: ");
+   list_invert(a);
+   print_list(a);
 }

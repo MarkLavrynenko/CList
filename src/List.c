@@ -76,12 +76,12 @@ int get_list_length(list* lst) {
 	return len;
 }
 
-int replace_all(list* lst, int m, int n) {
+int replace_all(list* lst, int n, int m) {
 	int repl = 0;
 	list_node* node = get_head(lst);
 	while (node != NULL) {
-		if (node->data == m) {
-			node->data = n;
+		if (node->data == n) {
+			node->data = m;
 			repl++;
 		}
 		node = node->next;
@@ -170,4 +170,33 @@ bool is_sublist(list* frst, list* scnd) {
 		part.head = part.head->next;	
 	}
 	return false;
-}	
+}
+
+int compare(const void* x1, const void* x2) {
+   return *((int*)x1)  - *((int*)x2);
+}
+
+
+// sort list using quick sort algorithm, Time - O(N*log(N)), O(N) - additional memory for array
+void list_sort(list* lst) {   
+   list_node* iter;
+   int i = 0, count = lst->count;
+   int* a = (int*)malloc(sizeof(int) * count);
+
+   //extract data from list
+   iter = lst->head;   
+   while (iter != NULL) {
+      *(a+(i++)) = iter->data;
+      iter = iter->next;
+   }
+   qsort(a, count, sizeof(int), compare);
+
+   // update date into list
+   iter = lst->head;   
+   i = 0;
+   while (iter != NULL) {
+      iter->data = *(a+(i++));
+      iter = iter->next;
+   }
+   free(a);
+}

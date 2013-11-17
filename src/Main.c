@@ -16,6 +16,10 @@ void test_is_sublist();
 void show_search();
 void show_concat();
 void show_invert();
+void show_isstart();
+void show_issublist();
+void show_replace();
+void show_sort();
 
 void test_list_creation() {
 	list* tlst;
@@ -138,7 +142,7 @@ int main() {
 	test_starts_with();
 	test_is_sublist();
 	printf("All tests done.\n");
-   printf("Which program u want to run?\n Enter one of the following:\nsearch\nconcat\ninvert\nisstart\nissublist\nreplace\n");
+   printf("Which program u want to run?\n Enter one of the following:\nsearch\nconcat\ninvert\nisstart\nissublist\nreplace\nsort\n");
    scanf("%s", command);
    if (strcmp(command, "search") == 0) {
       show_search();
@@ -147,11 +151,13 @@ int main() {
    } else if (strcmp(command, "invert") == 0) {
       show_invert();
    } else if (strcmp(command, "isstart") == 0) {
-
+      show_isstart();
    } else if (strcmp(command, "issublist") == 0) {
-
+      show_issublist();
    } else if (strcmp(command, "replace") == 0) {
-
+      show_replace();
+   } else  if (strcmp(command, "sort") == 0) {
+      show_sort();
    } else printf("Invalid command\n");   
    getch();
    return 0;
@@ -184,5 +190,44 @@ void show_invert() {
    read_list(&a, 1);
    printf("Result list is: ");
    list_invert(a);
+   print_list(a);
+}
+
+void show_isstart() {
+   list *big, *small;
+   printf("Show 'is start' demo\n");
+   read_list(&big, 1);
+   read_list(&small, 2);
+   printf("First list %sstarts with second\n",
+      starts_with(big, small) ? "" : "DO NOT ");
+}
+
+void show_issublist() {
+   list *big, *small;
+   printf("Show 'is sublist' demo\n");
+   read_list(&big, 1);
+   read_list(&small, 2);
+   printf("First list %scontains second\n",
+      is_sublist(big, small) ? "" : "DO NOT ");
+}
+
+void show_replace() {
+    list *a;
+    int n, m;
+    printf("Show replace demo\n");
+    read_list(&a, 1);
+    printf("Enter two numbers: n and m to replace all n to m\n");
+    scanf("%d %d", &n, &m);
+    replace_all(a, n, m);
+    printf("Result is: ");
+    print_list(a);
+}
+
+void show_sort() {
+   list* a;
+   printf("Show sort demo\n");
+   read_list(&a, 1);
+   list_sort(a);
+   printf("Result is: ");
    print_list(a);
 }

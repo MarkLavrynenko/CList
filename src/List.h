@@ -26,5 +26,7 @@ int get_list_length(list* lst);
 int replace_all(list* lst, int m, int n);
 list_node* find_element(list* lst, int elem);
 list* list_concat(list* fst, list* scnd);
+void list_invert(list* lst);
 bool starts_with(list* frst, list* second);
 bool is_sublist(list* frst, list* scnd);
+void list_sort(list* lst);
